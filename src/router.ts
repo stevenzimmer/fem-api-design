@@ -1,28 +1,40 @@
 import { Router } from 'express';
+import { body, validationResult } from 'express-validator';
+import { createProduct, deleteProduct, getOneProduct, getProducts, updateProduct } from './handlers/products';
 
 
 const router = Router();
 
 // Product routes
-router.get("/products", (req, res) => {
+router.get("/products", getProducts, (req, res) => {
   // res.send("Products");
   res.json({ 
     message: req.secret,
     user: req.user
    });
 });
-router.get("/products/:id", (req, res) => {
+router.get("/products/:id", getOneProduct, (req, res) => {
   res.send("Product Id");
   // res.json({ id: req.params.id });
 });
-router.post('/products', (req, res) => {
+router.post('/products', body("name"), createProduct, (req, res) => {
   res.send('Create product');
 
   // res.json({ message: "Create product" });
 
 });
-router.put("/products/:id", (req, res) => {});
-router.delete("/products/:id", (req, res) => {});
+router.put("/products/:id", updateProduct, body("name").isString(), (req, res) => {
+  const errors = validationResult(req);
+  console.log({errors});
+
+  if (!errors.isEmpty()) {
+    res.status(400);
+    res.json({ errors: errors.array() });
+    // return res.status(400).json({ errors: errors.mapped() });
+    return;
+  }
+});
+router.delete("/products/:id", deleteProduct, (req, res) => {});
 
 // Update routes
 router.get('/update', (req, res) => {
