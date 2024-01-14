@@ -1,5 +1,5 @@
-// const app = require("./server");
-// import app from "./server";
+import * as dotenv from "dotenv";
+dotenv.config();
 import app from "./server";
 
 app.listen(3001, () => {

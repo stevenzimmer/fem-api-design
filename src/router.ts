@@ -6,7 +6,10 @@ const router = Router();
 // Product routes
 router.get("/products", (req, res) => {
   // res.send("Products");
-  res.json({ message: req.secret });
+  res.json({ 
+    message: req.secret,
+    user: req.user
+   });
 });
 router.get("/products/:id", (req, res) => {
   res.send("Product Id");
